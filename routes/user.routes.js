@@ -3,16 +3,6 @@ const router = express.Router();
 const User = require("../models/User.model.js");
 const { isAuthenticated } = require("../middlewares/auth.middleware");
 
-/* // Create a new user is now in auth 
-router.post("/", async (req, res) => {
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-}); */
-
 // Get all users
 router.get("/", async (req, res) => {
   try {
