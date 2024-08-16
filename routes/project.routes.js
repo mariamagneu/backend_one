@@ -7,8 +7,8 @@ const router = require("express").Router();
 router.get("/", async (req, res, next) => {
   try {
     const projectsData = await Project.find().populate(
-      "createdBy",
-      "username email"
+      "technology",
+      "title version knowledge"
     );
     res.json(projectsData);
   } catch (error) {
