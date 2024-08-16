@@ -1,33 +1,33 @@
 const { default: mongoose } = require("mongoose");
-const Recipe = require("../models/Recipe.model");
+const Project = require("../models/Project.model");
 const { isAuthenticated } = require("../middlewares/route-guard.middleware");
 
 const router = require("express").Router();
-// All routes starts with /api/recipes
+// All routes starts with /api/Projects
 router.get("/", async (req, res, next) => {
   try {
-    const recipesData = await Recipe.find().populate(
+    const projectsData = await Project.find().populate(
       "createdBy",
       "username email"
     );
-    res.json(recipesData);
+    res.json(projectsData);
   } catch (error) {
     next(error);
   }
 });
 
-router.get("/:recipeId", async (req, res, next) => {
-  const { recipeId } = req.params;
-  if (!mongoose.isValidObjectId(recipeId)) {
+router.get("/:projectId", async (req, res, next) => {
+  const { projectId } = req.params;
+  if (!mongoose.isValidObjectId(projectId)) {
     return next(new Error("Invalid ID"));
   }
 
   try {
-    const recipe = await Recipe.findById(recipeId);
-    if (!recipe) {
-      throw new Error("Recipe not found!");
+    const project = await Project.findById(projectId);
+    if (!project) {
+      throw new Error("project not found!");
     }
-    res.status(200).json(recipe);
+    res.status(200).json(project);
   } catch (error) {
     next(error);
   }
@@ -35,52 +35,56 @@ router.get("/:recipeId", async (req, res, next) => {
 
 router.post("/", isAuthenticated, async (req, res, next) => {
   try {
-    const newRecipe = await Recipe.create({
+    const newProject = await Project.create({
       ...req.body,
       createdBy: req.tokenPayload.userId,
     });
-    res.status(201).json(newRecipe);
+    res.status(201).json(newProject);
   } catch (error) {
     next(error);
   }
 });
 
-router.put("/:recipeId", isAuthenticated, async (req, res, next) => {
-  const { recipeId } = req.params;
+router.put("/:projectId", isAuthenticated, async (req, res, next) => {
+  const { projectId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(recipeId)) {
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
     return next(new Error("Invalid ID"));
   }
 
   try {
-    const updatedRecipe = await Recipe.findByIdAndUpdate(recipeId, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedProject = await Project.findByIdAndUpdate(
+      projectId,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
-    if (!updatedRecipe) {
-      return next(new Error("Recipe not found"));
+    if (!updatedProject) {
+      return next(new Error("Project not found"));
     }
-    res.status(200).json(updatedRecipe);
+    res.status(200).json(updatedProject);
   } catch (error) {
     next(error);
   }
 });
 
-router.delete("/:recipeId", isAuthenticated, async (req, res, next) => {
-  const { recipeId } = req.params;
+router.delete("/:projectId", isAuthenticated, async (req, res, next) => {
+  const { projectId } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(recipeId)) {
+  if (!mongoose.Types.ObjectId.isValid(projectId)) {
     return next(new Error("Invalid ID"));
   }
 
   try {
-    const recipeToDelete = await Recipe.findById(recipeId);
-    if (!recipeToDelete) {
-      return next(new Error("Recipe not found"));
+    const projectToDelete = await Project.findById(projectId);
+    if (!projectToDelete) {
+      return next(new Error("Project not found"));
     }
-    if (recipeToDelete.createdBy === req.tokenPayload.userId) {
-      await Recipe.findByIdAndDelete(recipeId);
+    if (projectToDelete.createdBy === req.tokenPayload.userId) {
+      await Project.findByIdAndDelete(projectId);
       res.status(204).send();
     }
   } catch (error) {
