@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const Project = require("../models/Project.model");
-const { isAuthenticated } = require("../middlewares/route-guard.middleware");
+const { isAuthenticated } = require("../middlewares/auth.middleware");
 
 const router = require("express").Router();
 // All routes starts with /api/Projects
