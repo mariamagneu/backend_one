@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema(
   {
@@ -19,13 +19,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ["Admin", "User"],
+      required: true,
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
     timestamps: true,
   }
-)
+);
 
-const User = model('User', userSchema)
+const User = model("User", userSchema);
 
-module.exports = User
+module.exports = User;
