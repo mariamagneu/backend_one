@@ -3,15 +3,7 @@ const router = express.Router();
 const Technology = require("../models/Technology.model.js");
 const { isAuthenticated } = require("../middlewares/auth.middleware");
 
-// Create a new technology
-router.post("/", async (req, res) => {
-  try {
-    const technology = await Technology.create(req.body);
-    res.status(201).json(technology);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-});
+// Create a new technology is in admin routes
 
 // Get all Technologies
 router.get("/", async (req, res) => {

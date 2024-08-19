@@ -33,17 +33,7 @@ router.get("/:projectId", async (req, res, next) => {
   }
 });
 
-router.post("/", isAuthenticated, async (req, res, next) => {
-  try {
-    const newProject = await Project.create({
-      ...req.body,
-      createdBy: req.tokenPayload.userId,
-    });
-    res.status(201).json(newProject);
-  } catch (error) {
-    next(error);
-  }
-});
+//create new project is in admin routes
 
 router.put("/:projectId", isAuthenticated, async (req, res, next) => {
   const { projectId } = req.params;
