@@ -19,11 +19,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    /*     role: {
+    role: {
       type: String,
       enum: ["Admin", "User"],
-      required: true,
-    }, */
+      default: "User", // Default to "User" for normal sign-ups
+    },
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
