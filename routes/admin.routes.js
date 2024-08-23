@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   isAuthenticated,
   isAdmin,
-} = require("../middleware/auth.middleware.js");
+} = require("../middlewares/auth.middleware.js");
 
 // Only admins can create projects
 router.post("/projects", isAuthenticated, isAdmin, async (req, res, next) => {

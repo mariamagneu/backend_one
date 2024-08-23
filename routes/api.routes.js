@@ -10,6 +10,6 @@ router.get("/", (req, res) => {
 
 router.use("/projects", projectRoutes);
 router.use("/users", userRoutes);
-route.use("/admin");
+router.use("/admin");
 
 module.exports = router;
