@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Technology = require("../models/Technology.model.js");
-const { isAuthenticated } = require("../middlewares/auth.middleware");
+const { isAuthenticated } = require("../middleware/auth.middleware.js");
 
 // Create a new technology is in admin routes
 

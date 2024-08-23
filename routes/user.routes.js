@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const User = require("../models/User.model.js");
-const { isAuthenticated } = require("../middlewares/auth.middleware");
+const { isAuthenticated } = require("../middleware/auth.middleware.js");
 
 // Get all users
 router.get("/", async (req, res) => {
