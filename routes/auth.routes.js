@@ -51,8 +51,16 @@ router.post("/login", async (req, res, next) => {
 });
 // GET Verify
 
-router.get("/verify", isAuthenticated, (req, res, next) => {
-  res.json({ message: "Token valid" });
+router.get("/verify", isAuthenticated, async (req, res) => {
+  try {
+    const user = await User.findById(req.tokenPayload.userId).select("role");
+    if (!user) {
+      return res.status(404).json("User not found");
+    }
+    res.status(200).json({ userId: req.tokenPayload.userId, role: user.role });
+  } catch (error) {
+    res.status(500).json("Failed to verify token");
+  }
 });
 
 module.exports = router;
