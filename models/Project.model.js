@@ -19,7 +19,7 @@ const projectSchema = new Schema(
       trim: true,
     },
     repos: {
-      type: [String],
+      type: String,
       required: [true, "Website is required."],
       trim: true,
     },
