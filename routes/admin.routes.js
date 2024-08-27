@@ -6,11 +6,10 @@ const {
 } = require("../middleware/auth.middleware.js");
 
 // Only admins can create projects
-router.post("/projects", isAuthenticated, isAdmin, async (req, res, next) => {
+router.post("/projects", isAdmin, async (req, res, next) => {
   try {
     const newProject = await Project.create({
       ...req.body,
-      createdBy: req.tokenPayload.userId,
     });
     res.status(201).json(newProject);
   } catch (error) {

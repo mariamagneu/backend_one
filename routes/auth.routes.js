@@ -48,6 +48,11 @@ router.post("/login", async (req, res, next) => {
       // User does exists with this username
       if (bcrypt.compareSync(password, potentialUser.passwordHash)) {
         // User has correct credentials
+
+        const payload = {
+          userId: potentialUser._id,
+          role: potentialUser.role, // Include the role in the payload
+        };
         const token = jwt.sign({ userId: potentialUser._id }, secret, {
           algorithm: "HS256",
           expiresIn: "6h",
