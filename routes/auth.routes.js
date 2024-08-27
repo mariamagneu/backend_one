@@ -16,11 +16,25 @@ router.post("/signup", async (req, res, next) => {
   const passwordHash = bcrypt.hashSync(req.body.password, salt);
 
   try {
-    const newUser = await User.create({ ...req.body, passwordHash });
+    // Set the role explicitly
+    const role = req.body.role || "User"; // Default role is "User" if not provided
+
+    // Create the new user with the role
+    const newUser = await User.create({
+      username: req.body.username,
+      email: req.body.email,
+      passwordHash: passwordHash,
+      role: role, // Include the role
+    });
+
     res.status(201).json(newUser);
+    console.log(newUser);
   } catch (error) {
     if (error.code === 11000) {
-      console.log("duplicate");
+      console.log("Duplicate entry detected:", error.message); // Enhanced logging
+      return res
+        .status(409)
+        .json({ message: "Email or username already exists" });
     }
     next(error);
   }
@@ -39,6 +53,7 @@ router.post("/login", async (req, res, next) => {
           expiresIn: "6h",
         });
         res.json({ token });
+        console.log(potentialUser);
       } else {
         res.status(403).json({ message: "Incorrect password" });
       }
