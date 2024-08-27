@@ -1,16 +1,42 @@
 const express = require("express");
 const router = express.Router();
+const Project = require("../models/Project.model.js");
+const Technology = require("../models/Technology.model.js");
 const {
   isAuthenticated,
   isAdmin,
 } = require("../middleware/auth.middleware.js");
 
-// Only admins can create projects
-router.post("/projects", isAdmin, async (req, res, next) => {
+// Example backend validation in project creation route
+router.post("/projects", async (req, res, next) => {
+  const {
+    title,
+    description,
+    website,
+    repos,
+    technology,
+    status,
+    author,
+    collaborators,
+  } = req.body;
   try {
+    // Check if the provided technology ID is valid
+    const techExists = await Technology.findById(technology);
+    if (!techExists) {
+      return res.status(400).json({ message: "Invalid technology ID" });
+    }
+
     const newProject = await Project.create({
-      ...req.body,
+      title,
+      description,
+      website,
+      repos,
+      technology,
+      status,
+      author,
+      collaborators,
     });
+
     res.status(201).json(newProject);
   } catch (error) {
     next(error);
