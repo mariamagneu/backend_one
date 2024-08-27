@@ -3,25 +3,33 @@ const secret = require("../config/secretGenerator");
 
 const isAuthenticated = (req, res, next) => {
   try {
-    const token = req.headers.authorization.split(" ")[1]; // get the token from headers "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2Njk4Y2Q3ZDFjNDc3YjMwNzE2OGM0YTMiLCJpYXQiOjE3MjEyOTMxNjB9.0u-Xwq483aEjrj9D2RUsDUZuqMTsOWFKeP_KZRW93Uw"
-    const payload = jwt.verify(token, secret); // decode token and get payload
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json("Authorization header not provided");
+    }
 
-    req.tokenPayload = payload; // to pass the decoded payload to the next route
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json("Token not provided or malformed");
+    }
+
+    const payload = jwt.verify(token, secret);
+    console.log("Decoded payload:", payload); // Log the payload for debugging
+    req.tokenPayload = payload;
     next();
   } catch (error) {
-    // the middleware will catch error and send 401 if:
-    // 1. There is no token
-    // 2. Token is invalid
-    // 3. There is no headers or authorization in req (no token)
-    res.status(401).json("token not provided or not valid");
+    console.error("Token verification error:", error.message);
+    return res.status(401).json("Token not provided, invalid, or expired");
   }
 };
 
 const isAdmin = (req, res, next) => {
+  console.log("Role from payload:", req.tokenPayload?.role); // Log the role for debugging
   if (req.tokenPayload && req.tokenPayload.role === "Admin") {
-    next(); // User is an admin, allow access
+    return next();
   } else {
-    res.status(403).json("Access denied. Admins only."); // Forbidden
+    console.error("Access denied. User role:", req.tokenPayload?.role);
+    return res.status(403).json("Access denied. Admins only.");
   }
 };
 

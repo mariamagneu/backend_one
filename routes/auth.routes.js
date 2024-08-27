@@ -53,11 +53,14 @@ router.post("/login", async (req, res, next) => {
           userId: potentialUser._id,
           role: potentialUser.role, // Include the role in the payload
         };
-        const token = jwt.sign({ userId: potentialUser._id }, secret, {
+        const token = jwt.sign(payload, secret, {
           algorithm: "HS256",
           expiresIn: "6h",
         });
         res.json({ token });
+        // After generating the token
+        const decoded = jwt.verify(token, secret);
+        console.log("Decoded Token:", decoded);
         console.log(potentialUser);
       } else {
         res.status(403).json({ message: "Incorrect password" });
