@@ -60,8 +60,7 @@ router.post("/login", async (req, res, next) => {
         res.json({ token });
         // After generating the token
         const decoded = jwt.verify(token, secret);
-        console.log("Decoded Token:", decoded);
-        console.log(potentialUser);
+        //  console.log("Decoded Token:", decoded);
       } else {
         res.status(403).json({ message: "Incorrect password" });
       }

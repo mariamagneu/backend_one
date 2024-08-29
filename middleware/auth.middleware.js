@@ -24,7 +24,6 @@ const isAuthenticated = (req, res, next) => {
 };
 
 const isAdmin = (req, res, next) => {
-  console.log("Role from payload:", req.tokenPayload?.role); // Log the role for debugging
   if (req.tokenPayload && req.tokenPayload.role === "Admin") {
     return next();
   } else {
