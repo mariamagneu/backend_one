@@ -8,6 +8,10 @@ const projectSchema = new Schema(
       required: [true, "Title is required."],
       trim: true,
     },
+    imageUrl: {
+      type: String,
+      trim: true,
+    },
     description: {
       type: String,
       required: [true, "Description is required."],
