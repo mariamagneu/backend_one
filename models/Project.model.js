@@ -23,11 +23,13 @@ const projectSchema = new Schema(
       required: [true, "Website is required."],
       trim: true,
     },
-    technology: {
-      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Technology" }],
-      ref: "Technology",
-      required: [true, "Technology information is required."],
-    },
+    technology: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Technology",
+        required: [true, "Technology information is required."],
+      },
+    ],
     status: {
       type: String,
       enum: ["finished", "MVP", "stuck", "inProgress", "ideation"],
