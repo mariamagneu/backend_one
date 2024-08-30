@@ -24,7 +24,7 @@ const projectSchema = new Schema(
       trim: true,
     },
     technology: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: "Technology" }],
       ref: "Technology",
       required: [true, "Technology information is required."],
     },
