@@ -11,6 +11,7 @@ const {
 router.post("/projects", async (req, res, next) => {
   const {
     title,
+    imageUrl,
     description,
     website,
     repos,
@@ -28,6 +29,7 @@ router.post("/projects", async (req, res, next) => {
 
     const newProject = await Project.create({
       title,
+      imageUrl,
       description,
       website,
       repos,
